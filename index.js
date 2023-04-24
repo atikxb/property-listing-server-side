@@ -39,7 +39,7 @@ async function run() {
             res.send(properties);
         });
         //find single property
-        app.get('/property', async (req, res) => {
+        app.post('/property', async (req, res) => {
             const queryId = req.body;
             const query = {_id: ObjectId(queryId.id)};
                 const property = await propertiesCollection.findOne(query);
