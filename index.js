@@ -51,7 +51,7 @@ async function run() {
             const result = await propertiesCollection.insertOne(property);
             res.json(result);
         });
-        //delete api
+        //delete property
         app.delete('/properties/:id', async (req, res) => {
             const id = req.params.id;
             const query = {_id: ObjectId(id)};
@@ -63,6 +63,13 @@ async function run() {
             const appointments = await appointmentsCollection.find({}).toArray();
             res.send(appointments);
         });
+        //delete appointment
+        app.delete('/appointments/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const result = await appointmentsCollection.deleteOne(query);
+            res.json(result);
+        })
         //sending email
         const sendMail = async email => {
             await transporter.sendMail(email, (error, info) => {
@@ -74,8 +81,8 @@ async function run() {
             const appointment = req.body;
             const result = await appointmentsCollection.insertOne(appointment);
             const email = {
-                from: `New Appoointment from ${appointment.name} for ${appointment.propertyName} <admin@codewavers.com>`, // sender address
-                to: `atikxb@gmail.com`, // list of receivers
+                from: `New Appoointment from ${appointment.name} for ${appointment.propertyName} <admin@codewavers.com>`, // admin email address
+                to: `abdulla.alkhatri2001@gmail.com`, // list of receivers
                 subject: `New Appoointment from ${appointment.name} for ${appointment.propertyName}`, // Subject line
                 html: `<p>Hlw good day, <br/> ${appointment.name} has just confirmed the appointment for ${appointment.propertyName}. Please contact him/her asap. </p> `, // html body
             }
