@@ -63,8 +63,18 @@ async function run() {
             const appointments = await appointmentsCollection.find({}).toArray();
             res.send(appointments);
         });
-        //delete appointment
-        app.delete('/appointments/:id', async (req, res) => {
+        //update appointment
+        app.put('/appointment/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const updateDoc = {
+                $set: {status: "Finished"}
+            };
+            const result = await appointmentsCollection.updateOne(query, updateDoc);
+            res.send(result);
+        })
+         //delete appointment
+         app.delete('/appointments/:id', async (req, res) => {
             const id = req.params.id;
             const query = {_id: ObjectId(id)};
             const result = await appointmentsCollection.deleteOne(query);
